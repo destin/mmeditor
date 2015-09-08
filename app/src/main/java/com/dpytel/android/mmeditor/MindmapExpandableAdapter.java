@@ -18,9 +18,6 @@ import com.dpytel.android.mmeditor.model.NodeId;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by dawid on 03.09.15.
- */
 public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     private Activity activity;
     private LayoutInflater inflater;
@@ -31,7 +28,7 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     public MindmapExpandableAdapter(Mindmap mindmap) {
         this.mindmap = mindmap;
         this.mindmapNode = new ParentOfRootNode(mindmap);
-        this.activeNodeId = mindmapNode.getNodeId();
+        this.activeNodeId = mindmap.getRootNode().getNodeId();
     }
 
     public void setInflater(LayoutInflater inflater, Activity activity) {
@@ -126,7 +123,7 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     public boolean isRootLevel() {
@@ -177,17 +174,19 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         @Override
+        @NonNull
         public List<MindmapNode> getChildren() {
             return Collections.singletonList(mindmap.getRootNode());
         }
 
         @Override
+        @NonNull
         public NodeId getNodeId() {
             return PARENT_OF_ROOT_NODE_ID;
         }
 
-        @Nullable
         @Override
+        @NonNull
         public MindmapNode getParentNode() {
             throw new UnsupportedOperationException();
         }
