@@ -38,7 +38,7 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.subelement, null);
+            convertView = inflater.inflate(R.layout.mindmap_child_item, null);
         }
 
         TextView textView = (TextView) convertView.findViewById(R.id.selected_element_text);
@@ -59,7 +59,7 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.selected_element, null);
+            convertView = inflater.inflate(R.layout.mindmap_group_item, null);
         }
 
         MindmapNode groupNode = getGroupNode(groupPosition);
