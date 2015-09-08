@@ -23,10 +23,9 @@ public class MindmapActivity extends ExpandableListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // this is not really  necessary as ExpandableListActivity contains an ExpandableList
-        //setContentView(R.layout.main);
+        setContentView(R.layout.activity_mindmap);
 
-        ExpandableListView expandableList = getExpandableListView(); // you can use (ExpandableListView) findViewById(R.id.list)
+        ExpandableListView expandableList = getExpandableListView();
 
         expandableList.setDividerHeight(2);
         expandableList.setGroupIndicator(null);
@@ -36,7 +35,7 @@ public class MindmapActivity extends ExpandableListActivity {
         Mindmap mindmap = mindmapParser.parseMindmap(inputStream);
         mindmapExpandableAdapter = new MindmapExpandableAdapter(mindmap);
         mindmapExpandableAdapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
-        expandableList.setAdapter(mindmapExpandableAdapter);
+        this.setListAdapter(mindmapExpandableAdapter);
         expandableList.setOnChildClickListener(this);
 
     }
