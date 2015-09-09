@@ -45,13 +45,6 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
         final MindmapNode groupNode = getGroupNode(groupPosition);
         final MindmapNode childNode = groupNode.getChildren().get(childPosition);
         textView.setText(childNode.getText());
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchToNode(groupNode, childNode.getNodeId());
-            }
-        };
-        convertView.setOnClickListener(onClickListener);
 
         return convertView;
     }
@@ -140,6 +133,14 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
             parentNode = mindmapNode.getParentNode();
         }
         switchToNode(parentNode, mindmapNode.getNodeId());
+    }
+
+    public void goToChild(int groupPosition, int childPosition) {
+        switchToNode(getGroupNode(groupPosition), getChildNode(groupPosition, childPosition).getNodeId());
+    }
+
+    public void goToRoot() {
+        switchToNode(new ParentOfRootNode(mindmap), mindmap.getRootNode().getNodeId());
     }
 
     private void switchToNode(@NonNull MindmapNode groupNode, NodeId newActiveNodeId) {

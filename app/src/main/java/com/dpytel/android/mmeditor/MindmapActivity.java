@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.dpytel.android.mmeditor.model.Mindmap;
@@ -38,6 +39,18 @@ public class MindmapActivity extends ExpandableListActivity {
         this.setListAdapter(mindmapExpandableAdapter);
         expandableList.setOnChildClickListener(this);
 
+        findViewById(R.id.go_level_up).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goLevelUp();
+            }
+        });
+        findViewById(R.id.go_to_root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRoot();
+            }
+        });
     }
 
     @NonNull
@@ -72,7 +85,24 @@ public class MindmapActivity extends ExpandableListActivity {
         if (mindmapExpandableAdapter.isRootLevel()) {
             super.onBackPressed();
         } else {
+            goLevelUp();
+        }
+
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        mindmapExpandableAdapter.goToChild(groupPosition, childPosition);
+        return true;
+    }
+
+    private void goLevelUp() {
+        if (!mindmapExpandableAdapter.isRootLevel()) {
             mindmapExpandableAdapter.goLevelUp();
         }
+    }
+
+    private void goToRoot() {
+        mindmapExpandableAdapter.goToRoot();
     }
 }
