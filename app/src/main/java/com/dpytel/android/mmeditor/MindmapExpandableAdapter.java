@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dpytel.android.mmeditor.model.Mindmap;
@@ -23,6 +24,12 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     private Mindmap mindmap;
     private MindmapNode mindmapNode;
     private NodeId activeNodeId;
+
+    private static final int[] EMPTY_STATE_SET = {};
+    private static final int[] GROUP_EXPANDED_STATE_SET = { android.R.attr.state_expanded };
+    private static final int[][] GROUP_STATE_SETS = { EMPTY_STATE_SET, // 0
+            GROUP_EXPANDED_STATE_SET // 1
+    };
 
     public MindmapExpandableAdapter(Mindmap mindmap) {
         this.mindmap = mindmap;
@@ -56,9 +63,18 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         MindmapNode groupNode = getGroupNode(groupPosition);
-        CheckedTextView checkedTextView = (CheckedTextView) convertView;
+        CheckedTextView checkedTextView = (CheckedTextView) convertView.findViewById(R.id.group_item_text);
         checkedTextView.setText(groupNode.getText());
         checkedTextView.setChecked(isExpanded);
+
+        ImageView indicator = (ImageView) convertView.findViewById(R.id.group_indicator);
+        if (groupNode.getChildren().size() == 0) {
+            indicator.setVisibility(View.INVISIBLE);
+        } else {
+            indicator.setVisibility(View.VISIBLE);
+            int state = isExpanded ? 1 : 0;
+            indicator.getDrawable().setState(GROUP_STATE_SETS[state]);
+        }
 
         if (groupNode.getNodeId().equals(activeNodeId)) {
             ExpandableListView expandableListView = (ExpandableListView) parent;
@@ -75,7 +91,7 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return getChildNode(groupPosition, childPosition).getNodeId().toLong();
+        return getChildNode(groupPosition, childPosition).getNodeId().toLong() + Integer.MAX_VALUE;
     }
 
     @Override
