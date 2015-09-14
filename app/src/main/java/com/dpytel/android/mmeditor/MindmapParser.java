@@ -14,7 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Created by dawid on 05.09.15.
+ * Parses input stream and creates {@link Mindmap} object.
  */
 public class MindmapParser {
 
@@ -25,7 +25,7 @@ public class MindmapParser {
     }
 
     @NonNull
-    public Mindmap parseMindmap(InputStream inputStream) {
+    public Mindmap parseMindmap(@NonNull InputStream inputStream) {
         Document document;
         try {
             DocumentBuilder docBuilder = documentBuilderFactory.newDocumentBuilder();

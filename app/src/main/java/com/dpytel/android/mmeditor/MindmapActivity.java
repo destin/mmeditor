@@ -51,7 +51,7 @@ public class MindmapActivity extends ExpandableListActivity {
         });
     }
 
-    private void setUpAdapter(InputStream inputStream) {
+    private void setUpAdapter(@NonNull InputStream inputStream) {
         Mindmap mindmap = mindmapParser.parseMindmap(inputStream);
         mindmapExpandableAdapter = new MindmapExpandableAdapter(mindmap);
         mindmapExpandableAdapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
