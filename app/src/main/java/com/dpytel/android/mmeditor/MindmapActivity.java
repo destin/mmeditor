@@ -3,6 +3,7 @@ package com.dpytel.android.mmeditor;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -26,16 +27,14 @@ public class MindmapActivity extends ExpandableListActivity {
 
         setContentView(R.layout.activity_mindmap);
 
-        ExpandableListView expandableList = getExpandableListView();
+        final ExpandableListView expandableList = getExpandableListView();
 
         expandableList.setDividerHeight(2);
         expandableList.setClickable(true);
 
         InputStream inputStream = getInputStream();
-        Mindmap mindmap = mindmapParser.parseMindmap(inputStream);
-        mindmapExpandableAdapter = new MindmapExpandableAdapter(mindmap);
-        mindmapExpandableAdapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
-        this.setListAdapter(mindmapExpandableAdapter);
+        setUpAdapter(inputStream);
+        expandActiveGroup();
         expandableList.setOnChildClickListener(this);
 
         findViewById(R.id.go_level_up).setOnClickListener(new View.OnClickListener() {
@@ -50,6 +49,28 @@ public class MindmapActivity extends ExpandableListActivity {
                 goToRoot();
             }
         });
+    }
+
+    private void setUpAdapter(InputStream inputStream) {
+        Mindmap mindmap = mindmapParser.parseMindmap(inputStream);
+        mindmapExpandableAdapter = new MindmapExpandableAdapter(mindmap);
+        mindmapExpandableAdapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+        mindmapExpandableAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                expandActiveGroup();
+            }
+
+            @Override
+            public void onInvalidated() {
+                expandActiveGroup();
+            }
+        });
+        this.setListAdapter(mindmapExpandableAdapter);
+    }
+
+    private void expandActiveGroup() {
+        getExpandableListView().expandGroup(mindmapExpandableAdapter.getActiveGroupPosition());
     }
 
     @NonNull

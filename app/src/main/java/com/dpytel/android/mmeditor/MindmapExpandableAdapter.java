@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,11 +76,6 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
             indicator.setVisibility(View.VISIBLE);
             int state = isExpanded ? 1 : 0;
             indicator.getDrawable().setState(GROUP_STATE_SETS[state]);
-        }
-
-        if (groupNode.getNodeId().equals(activeNodeId)) {
-            ExpandableListView expandableListView = (ExpandableListView) parent;
-            expandableListView.expandGroup(groupPosition);
         }
 
         return convertView;
@@ -176,6 +170,16 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
     private MindmapNode getChildNode(int groupPosition, int childPosition) {
         final MindmapNode groupNode = getGroupNode(groupPosition);
         return groupNode.getChildren().get(childPosition);
+    }
+
+    public int getActiveGroupPosition() {
+        List<MindmapNode> children = mindmapNode.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i).getNodeId().equals(activeNodeId)) {
+                return i;
+            }
+        }
+        throw new IllegalStateException("Invalid activeNodeId " + activeNodeId);
     }
 
     public static class ParentOfRootNode implements MindmapNode {
