@@ -58,17 +58,20 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        MindmapNode groupNode = getGroupNode(groupPosition);
+        boolean hasChildren = groupNode.getChildren().size() != 0;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.mindmap_group_item, null);
         }
+        // if group has no children then avoid propagating click event to parent
+        convertView.setClickable(!hasChildren);
 
-        MindmapNode groupNode = getGroupNode(groupPosition);
         CheckedTextView checkedTextView = (CheckedTextView) convertView.findViewById(R.id.group_item_text);
         checkedTextView.setText(groupNode.getText());
         checkedTextView.setChecked(isExpanded);
 
         ImageView indicator = (ImageView) convertView.findViewById(R.id.group_indicator);
-        if (groupNode.getChildren().size() == 0) {
+        if (!hasChildren) {
             indicator.setVisibility(View.INVISIBLE);
         } else {
             indicator.setVisibility(View.VISIBLE);
