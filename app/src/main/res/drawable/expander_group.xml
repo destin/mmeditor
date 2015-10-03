@@ -4,8 +4,8 @@
 
     <item
         android:state_expanded="true"
-        android:drawable="@*android:drawable/expander_ic_maximized" />
+        android:drawable="@drawable/expander_ic_maximized" />
     <item
-        android:drawable="@*android:drawable/expander_ic_minimized" />
+        android:drawable="@drawable/expander_ic_minimized" />
 
 </selector>
