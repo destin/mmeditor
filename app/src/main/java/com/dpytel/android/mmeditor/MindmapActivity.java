@@ -29,7 +29,6 @@ public class MindmapActivity extends ExpandableListActivity {
 
         final ExpandableListView expandableList = getExpandableListView();
 
-        expandableList.setDividerHeight(2);
         expandableList.setClickable(true);
 
         InputStream inputStream = getInputStream();
