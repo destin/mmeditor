@@ -6,8 +6,14 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 
 import com.dpytel.android.mmeditor.model.Mindmap;
@@ -30,6 +36,34 @@ public class MindmapActivity extends ExpandableListActivity {
         final ExpandableListView expandableList = getExpandableListView();
 
         expandableList.setClickable(true);
+        expandableList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.mindmap_context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
 
         InputStream inputStream = getInputStream();
         setUpAdapter(inputStream);
@@ -123,5 +157,11 @@ public class MindmapActivity extends ExpandableListActivity {
 
     private void goToRoot() {
         mindmapExpandableAdapter.goToRoot();
+    }
+
+    @Nullable
+    @Override
+    public ActionMode startActionMode(ActionMode.Callback callback) {
+        return super.startActionMode(callback);
     }
 }
