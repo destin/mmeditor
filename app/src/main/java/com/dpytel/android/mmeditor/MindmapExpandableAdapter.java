@@ -1,6 +1,7 @@
 package com.dpytel.android.mmeditor;
 
 import android.app.Activity;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,15 @@ public class MindmapExpandableAdapter extends BaseExpandableListAdapter {
         final MindmapNode groupNode = getGroupNode(groupPosition);
         final MindmapNode childNode = groupNode.getChildren().get(childPosition);
         textView.setText(childNode.getText());
+        ImageView goDeeperIcon = (ImageView) convertView.findViewById(R.id.child_go_deeper_icon);
+        boolean hasChildren = childNode.getChildren().size() > 0;
+        if (hasChildren) {
+            goDeeperIcon.setVisibility(View.VISIBLE);
+        } else {
+            goDeeperIcon.setVisibility(View.INVISIBLE);
+        }
+        // prevent item to be clicked
+        convertView.setClickable(!hasChildren);
 
         return convertView;
     }
